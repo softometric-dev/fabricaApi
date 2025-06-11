@@ -6,7 +6,7 @@ use App\Models\Common\DataModels\BaseDataModel;
 use App\Models\Common\DataModels\CategoryDataModel;
 use App\Models\Common\DataModels\BrandDataModel;
 
-class ProductDataModel extends UserBasicInfoDataModel
+class ProductDataModel extends BaseDataModel
 {
     public $productId;
     public $productName;
@@ -81,7 +81,18 @@ class ProductDataModel extends UserBasicInfoDataModel
             $product->productId = $objRow->productId ?? null;
             $product->productName = $objRow->productName ?? null;
             $product->size = $objRow->size ?? null;
-            $product->image = $objRow->image ?? null;
+            // $product->image = $objRow->image ?? null;
+
+             // Append base_url if image exists and is a relative path
+            $imagePath = $objRow->image ?? null;
+            if (!empty($imagePath)) {
+                // If not already a full URL, prepend base_url()
+                if (!preg_match('/^https?:\/\//', $imagePath)) {
+                    $imagePath = base_url($imagePath);
+                }
+            }
+             $product->image = $imagePath;
+
             $product->specification = $objRow->specification ?? null;
             $product->productModifiedDateTime = $objRow->productModifiedDateTime ?? null;
             $product->category = CategoryDataModel::fromDbResultRow($objRow);

@@ -8,7 +8,7 @@ use App\Models\Common\DataModels\BrandDataModel;
 use App\Libraries\{ParameterException};
 
 
-class UpdateProductRequestDataModel extends ApiResponseDataModel
+class UpdateProductRequestDataModel extends ApiRequestDataModel
 {
 
     public $product;

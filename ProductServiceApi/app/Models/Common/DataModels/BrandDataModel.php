@@ -5,7 +5,7 @@ namespace App\Models\Common\DataModels;
 use App\Models\Common\DataModels\BaseDataModel;
 use App\Models\Common\DataModels\CategoryDataModel;
 
-class BrandDataModel extends UserBasicInfoDataModel
+class BrandDataModel extends BaseDataModel
 {
     public $brandId;
     public $brandName;

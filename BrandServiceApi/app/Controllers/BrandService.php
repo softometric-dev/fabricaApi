@@ -35,10 +35,10 @@ class BrandService extends BaseController
             set_error_handler(['App\Libraries\CustomException', 'exceptionHandler']);
 
             $getAllCategoriesResponseDataModel = new GetAllCategoriesResponseDataModel();
-            $authInfo = $this->checkPermission();
+            // $authInfo = $this->checkPermission();
 
             $getAllCategoriesRequestDataModel = GetAllCategoriesRequestDataModel::fromJson($this->request->getBody());
-            $getAllCategoriesRequestDataModel->authInfo = $authInfo;
+            // $getAllCategoriesRequestDataModel->authInfo = $authInfo;
             $getAllCategoriesRequestDataModel->validateAndEnrichData();
 
             set_error_handler(['App\Libraries\DatabaseException', 'exceptionHandler']);
@@ -62,10 +62,18 @@ class BrandService extends BaseController
             $createBrandResponseDataModel = new CreateBrandResponseDataModel();
             $authInfo = $this->checkPermission();
 
-            $createBrandRequestDataModel = CreateBrandRequestDataModel::fromJson($this->request->getBody());
-           
+            $requestBody = $this->request->getPost('data');
+            $createBrandRequestDataModel = CreateBrandRequestDataModel::fromJson($requestBody);
+
             $createBrandRequestDataModel->authInfo = $authInfo;
             $createBrandRequestDataModel->validateAndEnrichData();
+
+                        // Handle file upload
+            $imageFile = $this->request->getFile('image');
+            if ($imageFile && $imageFile->isValid()) {
+                $relativePath = uploadImage($imageFile, 'brands');
+                $createBrandRequestDataModel->newBrand->image = $relativePath;
+            }
           
             set_error_handler([DatabaseException::class, 'exceptionHandler']);
             $this->BrandService_model->createBrandProc($createBrandRequestDataModel,$createBrandResponseDataModel);
@@ -89,11 +97,11 @@ class BrandService extends BaseController
             set_error_handler(['App\Libraries\CustomException', 'exceptionHandler']);
             $getBrandResponseDataModel = new GetBrandResponseDataModel();
 
-            $authInfo = $this->checkPermission();
+            // $authInfo = $this->checkPermission();
 
             $getBrandRequestDataModel = GetBrandRequestDataModel::fromJson($this->request->getBody());
 
-            $getBrandRequestDataModel->authInfo = $authInfo;
+            // $getBrandRequestDataModel->authInfo = $authInfo;
             $getBrandRequestDataModel->validateAndEnrichData();
 
             set_error_handler(['App\Libraries\DatabaseException', 'exceptionHandler']);
@@ -119,10 +127,35 @@ class BrandService extends BaseController
 
             $authInfo = $this->checkPermission();
 
-            $updateBrandRequestDataModel = UpdateBrandRequestDataModel::fromJson($this->request->getBody());
+
+
+
+             $requestBody = $this->request->getPost('data');
+             $updateBrandRequestDataModel = UpdateBrandRequestDataModel::fromJson($requestBody);
+
 
             $updateBrandRequestDataModel->authInfo = $authInfo;
             $updateBrandRequestDataModel->validateAndEnrichData();
+
+            $brand = $updateBrandRequestDataModel->brand;
+
+            $oldBrand = $this->BrandService_model->getBrandPlanByIdProc($brand->brandId);
+
+            $oldImagePath = $oldBrand && !empty($oldBrand->image) ? $oldBrand->image : null;
+
+
+            // Handle new file upload
+            $file = $this->request->getFile('image');
+            if ($file && $file->isValid()) {
+
+                if (!empty($oldImagePath)) {
+                    deleteFile($oldImagePath);
+                }
+
+                $uploadedPath = uploadImage($file, 'brands');
+                $brand->image = $uploadedPath;
+            } 
+
 
         
             set_error_handler(['App\Libraries\DatabaseException', 'exceptionHandler']);
@@ -151,7 +184,16 @@ class BrandService extends BaseController
             $deleteBrandRequestDataModel->validateAndEnrichData();
 
             set_error_handler(['App\Libraries\DatabaseException', 'exceptionHandler']);
+            $brand = $deleteBrandRequestDataModel->brandToDelete;
+            $oldBrand = $this->BrandService_model->getBrandPlanByIdProc($brand->brandId);
+
+            $oldImagePath = $oldBrand && !empty($oldBrand->image) ? $oldBrand->image : null;
+
             $this->BrandService_model->deleteBrandProc($deleteBrandRequestDataModel, $deleteBrandResponseDataModel);
+
+            if (!empty($oldImagePath)) {
+              deleteFile($oldImagePath);
+            }
 
             set_error_handler(['App\Libraries\CustomException', 'exceptionHandler']);
             $this->sendSuccessResponse($deleteBrandResponseDataModel);
@@ -170,10 +212,10 @@ class BrandService extends BaseController
             set_error_handler(['App\Libraries\CustomException', 'exceptionHandler']);
             $searchBrandResponseDataModel = new SearchBrandResponseDataModel();
 
-            $authInfo = $this->checkPermission();
+            // $authInfo = $this->checkPermission();
            
             $searchBrandRequestDataModel = SearchBrandRequestDataModel::fromJson($this->request->getBody());
-            $searchBrandRequestDataModel->authInfo = $authInfo;
+            // $searchBrandRequestDataModel->authInfo = $authInfo;
             $searchBrandRequestDataModel->validateAndEnrichData();
          
             set_error_handler(['App\Libraries\DatabaseException', 'exceptionHandler']);

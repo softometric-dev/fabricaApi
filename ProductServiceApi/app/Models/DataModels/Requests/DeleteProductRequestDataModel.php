@@ -6,7 +6,7 @@ use App\Models\Common\DataModels\ProductDataModel;
 use App\Libraries\{ParameterException};
 
 
-class DeleteProductRequestDataModel extends ApiResponseDataModel
+class DeleteProductRequestDataModel extends ApiRequestDataModel
 {
     public $productToDelete;
 	public function __construct()

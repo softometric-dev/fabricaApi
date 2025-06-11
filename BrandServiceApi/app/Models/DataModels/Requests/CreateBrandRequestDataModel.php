@@ -23,7 +23,7 @@ class CreateBrandRequestDataModel extends ApiRequestDataModel
         if (
             is_null($newBrand) ||
             empty($newBrand->brandName) ||
-            empty($newBrand->categoryId )
+            empty($newBrand->category->categoryId)
         ) {
             throw new ParameterException(MANDATORY_PARAMETER_ERROR, 'brandName,categoryId');
         }

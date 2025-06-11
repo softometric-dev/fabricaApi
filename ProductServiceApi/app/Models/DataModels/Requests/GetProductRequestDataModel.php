@@ -6,7 +6,7 @@ use App\Models\Common\DataModels\ProductDataModel;
 use App\Libraries\{ParameterException};
 
 
-class GetProductRequestDataModel extends ApiResponseDataModel
+class GetProductRequestDataModel extends ApiRequestDataModel
 {
 
     public $product;

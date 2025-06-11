@@ -63,16 +63,36 @@ class ProductService_model extends Base_model
        
     }
 
-     function updatProductProc($updateProductRequestDataModel, &$updateProductResponseDataModel)
-    {
+    function getProductByIdProc($productId)
+    { 
         
 
+        $sql = "CALL sp_getProductById(?)";
+        try {
+         $query = $this->db->query($sql, [$productId]);
+        } catch (DatabaseException $e) {
+            $this->checkDBError();
+        }
+
+        
+         // Fetch the result as an array of objects or arrays
+         $resultSet1 = ProductDataModel::fromDbResultSet($query->getResultArray());
+         $product = count($resultSet1) > 0 ? $resultSet1[0] : null;
+         return $product;
+            
+            
+    }
+    
+
+     function updatProductProc($updateProductRequestDataModel, &$updateProductResponseDataModel)
+    {
+       
         $product = $updateProductRequestDataModel->product;
 
         $categoryId = !isNullOrEmpty($product) && !isNullOrEmpty($product->category)  && !isNullOrEmpty($product->category->categoryId) ? $product->category->categoryId : null;
         $brandId = !isNullOrEmpty($product) && !isNullOrEmpty($product->brand)  && !isNullOrEmpty($product->brand->brandId) ? $product->brand->brandId : null;
        
-        $sql1 = "CALL 	sp_updateProductByProductId(?,?,?,?,?,?,?,?)";
+        $sql1 = "CALL sp_updateProductByProductId(?,?,?,?,?,?,?,?)";
         try {
             $query1 = $this->db->query($sql1, [
                 $product->productId,

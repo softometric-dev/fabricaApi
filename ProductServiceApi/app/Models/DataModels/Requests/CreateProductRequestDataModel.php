@@ -4,7 +4,7 @@ use App\Models\Common\DataModels\BaseDataModel;
 use App\Models\Common\DataModels\ApiRequestDataModel;
 use App\Models\Common\DataModels\ProductDataModel;
 use App\Libraries\{ParameterException};
-class CreateProductRequestDataModel extends ApiResponseDataModel
+class CreateProductRequestDataModel extends ApiRequestDataModel
 {
     public $newProduct;
 

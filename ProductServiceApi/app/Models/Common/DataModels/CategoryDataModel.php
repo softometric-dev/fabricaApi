@@ -4,7 +4,7 @@ namespace App\Models\Common\DataModels;
 
 use App\Models\Common\DataModels\BaseDataModel;
 
-class CategoryDataModel extends UserBasicInfoDataModel
+class CategoryDataModel extends BaseDataModel
 {
     public $categoryId;
     public $categoryName;

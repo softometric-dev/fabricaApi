@@ -7,16 +7,16 @@ use App\Libraries\{ApiCallException, AuthorisationException, CustomException, Da
 use App\Models\ProductService_model;
 use App\Controllers\BaseController;
 
-use App\Models\DataModels\Responses\CreateProductRequestDataModel;
-use App\Models\DataModels\Requests\CreateProductResponseDataModel;
-use App\Models\DataModels\Responses\GetProductRequestDataModel;
-use App\Models\DataModels\Requests\GetProductResponseDataModel;
-use App\Models\DataModels\Responses\UpdateProductRequestDataModel;
-use App\Models\DataModels\Requests\UpdateProductResponseDataModel;
-use App\Models\DataModels\Responses\DeleteProductRequestDataModel;
-use App\Models\DataModels\Requests\DeleteProductResponseDataModel;
-use App\Models\DataModels\Responses\SearchProductRequestDataModel;
-use App\Models\DataModels\Requests\SearchProductResponseDataModel;
+use App\Models\DataModels\Requests\CreateProductRequestDataModel;
+use App\Models\DataModels\Responses\CreateProductResponseDataModel;
+use App\Models\DataModels\Requests\GetProductRequestDataModel;
+use App\Models\DataModels\Responses\GetProductResponseDataModel;
+use App\Models\DataModels\Requests\UpdateProductRequestDataModel;
+use App\Models\DataModels\Responses\UpdateProductResponseDataModel;
+use App\Models\DataModels\Requests\DeleteProductRequestDataModel;
+use App\Models\DataModels\Responses\DeleteProductResponseDataModel;
+use App\Models\DataModels\Requests\SearchProductRequestDataModel;
+use App\Models\DataModels\Responses\SearchProductResponseDataModel;
 
 class ProductService extends BaseController
 {
@@ -29,16 +29,30 @@ class ProductService extends BaseController
      public function createProduct()
 	{
 
+      
         try
 		{
             set_error_handler([CustomException::class, 'exceptionHandler']);
             $createProductResponseDataModel = new CreateProductResponseDataModel();
+          
             $authInfo = $this->checkPermission();
+ 
+            // $createProductRequestDataModel = CreateProductRequestDataModel::fromJson($this->request->getBody());
 
-            $createProductRequestDataModel = CreateProductRequestDataModel::fromJson($this->request->getBody());
+            $requestBody = $this->request->getPost('data');
+             
+            $createProductRequestDataModel = CreateProductRequestDataModel::fromJson($requestBody);
            
             $createProductRequestDataModel->authInfo = $authInfo;
             $createProductRequestDataModel->validateAndEnrichData();
+
+          
+             $imageFile = $this->request->getFile('image');
+           
+            if ($imageFile && $imageFile->isValid()) {
+                $relativePath = uploadImage($imageFile, 'products');
+                $createProductRequestDataModel->newProduct->image = $relativePath;
+            }
           
             set_error_handler([DatabaseException::class, 'exceptionHandler']);
             $this->ProductService_model->createProductProc($createProductRequestDataModel,$createProductResponseDataModel);
@@ -62,11 +76,11 @@ class ProductService extends BaseController
             set_error_handler(['App\Libraries\CustomException', 'exceptionHandler']);
             $getProductResponseDataModel = new GetProductResponseDataModel();
 
-            $authInfo = $this->checkPermission();
+            // $authInfo = $this->checkPermission();
 
             $getProductRequestDataModel = GetProductRequestDataModel::fromJson($this->request->getBody());
 
-            $getProductRequestDataModel->authInfo = $authInfo;
+            // $getProductRequestDataModel->authInfo = $authInfo;
             $getProductRequestDataModel->validateAndEnrichData();
 
             set_error_handler(['App\Libraries\DatabaseException', 'exceptionHandler']);
@@ -91,11 +105,35 @@ class ProductService extends BaseController
 
             $authInfo = $this->checkPermission();
 
-            $updateProductRequestDataModel = UpdateProductRequestDataModel::fromJson($this->request->getBody());
+            // $updateProductRequestDataModel = UpdateProductRequestDataModel::fromJson($this->request->getBody());
+
+            $requestBody = $this->request->getPost('data');
+             $updateProductRequestDataModel = UpdateProductRequestDataModel::fromJson($requestBody);
 
             $updateProductRequestDataModel->authInfo = $authInfo;
             $updateProductRequestDataModel->validateAndEnrichData();
 
+            $product = $updateProductRequestDataModel->product;
+            
+
+
+            $oldProduct = $this->ProductService_model->getProductByIdProc($product->productId);
+
+       
+
+            $oldImagePath = $oldProduct && !empty($oldProduct->image) ? $oldProduct->image : null;
+
+            // Handle new file upload
+            $file = $this->request->getFile('image');
+            if ($file && $file->isValid()) {
+
+                if (!empty($oldImagePath)) {
+                    deleteFile($oldImagePath);
+                }
+
+                $uploadedPath = uploadImage($file, 'products');
+                $product->image = $uploadedPath;
+            } 
         
             set_error_handler(['App\Libraries\DatabaseException', 'exceptionHandler']);
             $this->ProductService_model->updatProductProc($updateProductRequestDataModel, $updateProductResponseDataModel);
@@ -123,7 +161,17 @@ class ProductService extends BaseController
             $deleteProductRequestDataModel->validateAndEnrichData();
 
             set_error_handler(['App\Libraries\DatabaseException', 'exceptionHandler']);
+
+            $product = $deleteProductRequestDataModel->productToDelete;
+            $oldProduct = $this->ProductService_model->getProductByIdProc($product->productId);
+
+             $oldImagePath = $oldProduct && !empty($oldProduct->image) ? $oldProduct->image : null;
+
             $this->ProductService_model->deleteProductProc($deleteProductRequestDataModel, $deleteProductResponseDataModel);
+
+            if (!empty($oldImagePath)) {
+              deleteFile($oldImagePath);
+            }
 
             set_error_handler(['App\Libraries\CustomException', 'exceptionHandler']);
             $this->sendSuccessResponse($deleteProductResponseDataModel);
@@ -141,10 +189,10 @@ class ProductService extends BaseController
             set_error_handler(['App\Libraries\CustomException', 'exceptionHandler']);
             $searchProductResponseDataModel = new SearchProductResponseDataModel();
 
-            $authInfo = $this->checkPermission();
+            // $authInfo = $this->checkPermission();
            
             $searchProductRequestDataModel = SearchProductRequestDataModel::fromJson($this->request->getBody());
-            $searchProductRequestDataModel->authInfo = $authInfo;
+            // $searchProductRequestDataModel->authInfo = $authInfo;
             $searchProductRequestDataModel->validateAndEnrichData();
          
             set_error_handler(['App\Libraries\DatabaseException', 'exceptionHandler']);

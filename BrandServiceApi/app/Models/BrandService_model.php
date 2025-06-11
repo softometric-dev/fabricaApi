@@ -85,20 +85,41 @@ class BrandService_model extends Base_model
          // Fetch the result as an array of objects or arrays
          $resultSet1 = BrandDataModel::fromDbResultSet($query->getResultArray());
          $getBrandResponseDataModel->brand = count($resultSet1) > 0 ? $resultSet1[0] : null;
-         if ($getBrandResponseDataModel->brand != null) {
+        //  if ($getBrandResponseDataModel->brand != null) {
             
-            mysqli_next_result($this->db->connID);
-            $nextResultSet = mysqli_store_result($this->db->connID);
+        //     $baseUrl = base_url(); 
+       
+        //      if (!empty($getBrandResponseDataModel->brand->image)) {
+        //         $getBrandResponseDataModel->brand->image = $baseUrl . $getBrandResponseDataModel->brand->image;
+        //     }
 
-            $categoryResult = $nextResultSet->fetch_all(MYSQLI_ASSOC);
-          
-            $resultSet2 = CategoryDataModel::fromDbResultSet($categoryResult);
-           
-            $getBrandResponseDataModel->brand->category = count($resultSet2) > 0 ? $resultSet2[0] : null;
+            
+            
 
-         }
+        //  }
        
     }
+
+     function getBrandPlanByIdProc($brandId)
+    { 
+        
+
+        $sql = "CALL sp_getBrandByBrandId(?)";
+        try {
+         $query = $this->db->query($sql, [$brandId]);
+        } catch (DatabaseException $e) {
+            $this->checkDBError();
+        }
+
+        
+         // Fetch the result as an array of objects or arrays
+         $resultSet1 = BrandDataModel::fromDbResultSet($query->getResultArray());
+         $brand = count($resultSet1) > 0 ? $resultSet1[0] : null;
+         return $brand;
+            
+            
+    }
+
 
     function updatBrandProc($updateBrandRequestDataModel, &$updateBrandResponseDataModel)
     {
@@ -106,7 +127,7 @@ class BrandService_model extends Base_model
 
         $brand = $updateBrandRequestDataModel->brand;
 
-        $categoryId = !isNullOrEmpty($brand) && !isNullOrEmpty($brand->category)  && !isNullOrEmpty($brand->category->brandId) ? $brand->category->brandId : null;
+        $categoryId = !isNullOrEmpty($brand) && !isNullOrEmpty($brand->category)  && !isNullOrEmpty($brand->category->categoryId) ? $brand->category->categoryId : null;
        
         $sql1 = "CALL sp_updateBrand(?,?,?,?,?)";
         try {
@@ -141,18 +162,7 @@ class BrandService_model extends Base_model
        
          $updateBrandResponseDataModel->brand = count($resultSet1) > 0 ? $resultSet1[0] : null;
 
-         if ($updateBrandResponseDataModel->brand != null) {
-            
-            mysqli_next_result($this->db->connID);
-            $nextResultSet = mysqli_store_result($this->db->connID);
-
-            $categoryResult = $nextResultSet->fetch_all(MYSQLI_ASSOC);
-          
-            $resultSet2 = CategoryDataModel::fromDbResultSet($categoryResult);
-           
-            $updateBrandResponseDataModel->brand->category = count($resultSet2) > 0 ? $resultSet2[0] : null;
-
-         }
+       
 
     }
 

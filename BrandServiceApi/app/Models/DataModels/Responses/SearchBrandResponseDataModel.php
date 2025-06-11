@@ -35,7 +35,7 @@ class SearchBrandResponseDataModel extends PaginationResponseDataModel
 			if ($brands != null) {
 				$searchBrandResponseDataModel->brands = array();
 				foreach ($brands as $brand) {
-					$brandDataModel = BrandDataModel::fromJson($mealFood);
+					$brandDataModel = BrandDataModel::fromJson($brand);
 					$searchBrandResponseDataModel->brands[] = $brandDataModel;
 				}
 			}
