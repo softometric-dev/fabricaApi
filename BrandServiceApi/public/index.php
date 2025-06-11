@@ -10,6 +10,16 @@ use Config\Paths;
  */
 
 $minPhpVersion = '8.1'; // If you update this, don't forget to update `spark`.
+
+$method=$_SERVER['REQUEST_METHOD'];
+if($method=="OPTIONS"){
+   header('Access-Control-Allow-Origin: *');
+   header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
+   header('Access-Control-Allow-Headers: Content-Type, Authorization');
+   header('HTTP/1.1 200 OK');
+   die();
+
+}
 if (version_compare(PHP_VERSION, $minPhpVersion, '<')) {
     $message = sprintf(
         'Your PHP version must be %s or higher to run CodeIgniter. Current version: %s',
