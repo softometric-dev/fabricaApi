@@ -10,6 +10,8 @@ class ProductEnquiryDataModel extends BaseDataModel
     public $fullName;
     public $companyName;
     public $email;
+    public $productId;
+    public $productName;
     public $productEnquiryModifiedDateTime;
 
      public function __construct()
@@ -35,6 +37,8 @@ class ProductEnquiryDataModel extends BaseDataModel
             $productEnquiryDataModel->fullName = $jsonData->fullName ?? null;
             $productEnquiryDataModel->companyName = $jsonData->companyName ?? null;
             $productEnquiryDataModel->email = $jsonData->email ?? null;
+            $productEnquiryDataModel->productId = $jsonData->productId ?? null;
+            $productEnquiryDataModel->productName = $jsonData->productName ?? null;
             $productEnquiryDataModel->productEnquiryModifiedDateTime = $jsonData->productEnquiryModifiedDateTime ?? null;
             
         }
@@ -68,6 +72,8 @@ class ProductEnquiryDataModel extends BaseDataModel
             $productEnquiry->fullName = $objRow->fullName ?? null;
             $productEnquiry->companyName = $objRow->companyName ?? null;
             $productEnquiry->email = $objRow->email ?? null;
+            $productEnquiry->productId = $objRow->productId ?? null;
+            $productEnquiry->productName = $objRow->productName ?? null;
             $productEnquiry->productEnquiryModifiedDateTime = $objRow->productEnquiryModifiedDateTime ?? null;
         }
 

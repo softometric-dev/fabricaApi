@@ -10,6 +10,8 @@ class DealEnquiryDataModel extends BaseDataModel
     public $fullName;
     public $companyName;
     public $email;
+    public $offerId;
+    public $offerName;
     public $dealEnquiryModifiedDateTime;
 
      public function __construct()
@@ -35,6 +37,8 @@ class DealEnquiryDataModel extends BaseDataModel
             $dealEnquiryDataModel->fullName = $jsonData->fullName ?? null;
             $dealEnquiryDataModel->companyName = $jsonData->companyName ?? null;
             $dealEnquiryDataModel->email = $jsonData->email ?? null;
+            $dealEnquiryDataModel->offerId = $jsonData->offerId ?? null;
+            $dealEnquiryDataModel->offerName = $jsonData->offerName ?? null;
             $dealEnquiryDataModel->dealEnquiryModifiedDateTime = $jsonData->dealEnquiryModifiedDateTime ?? null;
             
         }
@@ -68,6 +72,8 @@ class DealEnquiryDataModel extends BaseDataModel
             $dealEnquiry->fullName = $objRow->fullName ?? null;
             $dealEnquiry->companyName = $objRow->companyName ?? null;
             $dealEnquiry->email = $objRow->email ?? null;
+            $dealEnquiry->offerId = $objRow->offerId ?? null;
+            $dealEnquiry->offerName = $objRow->offerName ?? null;
             $dealEnquiry->dealEnquiryModifiedDateTime = $objRow->dealEnquiryModifiedDateTime ?? null;
         }
 

@@ -21,14 +21,17 @@ class ContactService_model extends Base_model
 	{
         
         $newProductEnquiry = $createProductEnquiryRequestDataModel->newProductEnquiry;
+        
+        $sql = "CALL sp_createProductEnquiry(?,?,?,?,?)";
       
-        $sql = "CALL sp_createProductEnquiry(?,?,?)";
        
         try {
             $query1 = $this->db->query($sql, [
                 $newProductEnquiry->fullName,
                 $newProductEnquiry->companyName,
                 $newProductEnquiry->email,
+                $newProductEnquiry->productId,
+                $newProductEnquiry->productName,
             ]);
         } catch (DatabaseException $e) {
             $this->checkDBError();
@@ -38,6 +41,18 @@ class ContactService_model extends Base_model
         $resultSet1 = ProductEnquiryDataModel::fromDbResultSet($query1->getResultArray());
       
         $createProductEnquiryResponseDataModel->newProductEnquiry = count($resultSet1) > 0 ? $resultSet1[0] : null;
+
+          if ($createProductEnquiryResponseDataModel->newProductEnquiry) {
+            $formData = [
+                'fullName' => $newProductEnquiry->fullName,
+                'email'    => $newProductEnquiry->email,
+                'phone'    => $newProductEnquiry->companyName,
+                'subject'  => "New Product Enquiry Submission",
+                'comment'  => $newProductEnquiry->fullName . " has submitted a product enquiry for Product ID: " . $newProductEnquiry->productId . " and Product Name: " . $newProductEnquiry->productName . ". Please review the details and respond accordingly.",
+            ];
+
+            $this->sendGenericFormEmail($formData, 'Product Enquiry Submission');
+        }
     }
 
     function createDealEnquiryProc($createDealEnquiryRequestDataModel,&$createDealEnquiryResponseDataModel)
@@ -45,13 +60,15 @@ class ContactService_model extends Base_model
         
         $newDealEnquiry = $createDealEnquiryRequestDataModel->newDealEnquiry;
       
-        $sql = "CALL sp_createDealEnquiry(?,?,?)";
+        $sql = "CALL sp_createDealEnquiry(?,?,?,?,?)";
        
         try {
             $query1 = $this->db->query($sql, [
                 $newDealEnquiry->fullName,
                 $newDealEnquiry->companyName,
                 $newDealEnquiry->email,
+                $newDealEnquiry->offerId,
+                $newDealEnquiry->offerName,
             ]);
         } catch (DatabaseException $e) {
             $this->checkDBError();
@@ -61,6 +78,18 @@ class ContactService_model extends Base_model
         $resultSet1 = DealEnquiryDataModel::fromDbResultSet($query1->getResultArray());
       
         $createDealEnquiryResponseDataModel->newDealEnquiry = count($resultSet1) > 0 ? $resultSet1[0] : null;
+
+        if ($createDealEnquiryResponseDataModel->newDealEnquiry) {
+            $formData = [
+                'fullName' => $newDealEnquiry->fullName,
+                'email'    => $newDealEnquiry->email,
+                'phone'    => $newDealEnquiry->companyName,
+                'subject'  => "New Deal Enquiry Submission",
+                'comment' => $newDealEnquiry->fullName . " has submitted a deal enquiry for Deal ID: " . $newDealEnquiry->offerId . " and Deal Name: " . $newDealEnquiry->offerName . ". Please review the details and respond accordingly.",
+            ];
+
+          $this->sendGenericFormEmail($formData, 'Deal Enquiry Submission');
+        }
     }
 
     function createPartnerProc($createPartnerRequestDataModel,&$createPartnerResponseDataModel)
@@ -85,6 +114,18 @@ class ContactService_model extends Base_model
         $resultSet1 = PartnerDataModel::fromDbResultSet($query1->getResultArray());
       
         $createPartnerResponseDataModel->newPartner = count($resultSet1) > 0 ? $resultSet1[0] : null;
+
+         if ($createPartnerResponseDataModel->newPartner) {
+            $formData = [
+                'fullName' => $newPartner->fullName,
+                'email'    => $newPartner->email,
+                'phone'    => $newPartner->companyName,
+                'subject'  => "New Partner Enquiry Submission",
+                'comment' => $newPartner->comment
+            ];
+
+          $this->sendGenericFormEmail($formData, 'Partner Enquiry Submission');
+        }
     }
 
     function createContactFormProc($createContactFormRequestDataModel,&$createContactFormResponseDataModel)
@@ -110,6 +151,18 @@ class ContactService_model extends Base_model
         $resultSet1 = ContactFormDataModel::fromDbResultSet($query1->getResultArray());
       
         $createContactFormResponseDataModel->newContactForm = count($resultSet1) > 0 ? $resultSet1[0] : null;
+        if ($createContactFormResponseDataModel->newContactForm) {
+            $formData = [
+                'fullName' => $newContactForm->fullName,
+                'email'    => $newContactForm->email,
+                'phone'    => $newContactForm->phone,
+                'subject'  => $newContactForm->subject,
+                'comment'  => $newContactForm->comment,
+            ];
+
+      $this->sendGenericFormEmail($formData, 'Contact Form Submission');
+}
+        
     }
 
     function searchProductEnquiryProc($searchProductEnquiryRequestDataModel, &$searchProductEnquiryResponseDataModel)

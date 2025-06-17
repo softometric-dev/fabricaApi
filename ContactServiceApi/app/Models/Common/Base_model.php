@@ -50,6 +50,49 @@ class Base_model extends Model
         }
     }
 
+    protected function sendGenericFormEmail(array $formData, string $formType = 'Form Submission')
+    {
+        $email = Services::email();
+
+        // Fallback values to avoid "undefined index"
+        $name    = $formData['fullName'] ?? 'Unknown';
+        $emailId = $formData['email'] ?? 'no-reply@example.com';
+        $phone   = $formData['phone'] ?? 'N/A';
+        $subject = $formData['subject'] ?? 'No Subject';
+        $messageContent = $formData['comment'] ?? 'No message';
+
+        // Set sender (your system email) and reply-to (user's email if available)
+        $email->setFrom('your@gmail.com', esc($name));
+        $email->setTo('envanto.alpha@gmail.com'); // <-- Change to your admin inbox
+
+        if (!empty($emailId)) {
+            $email->setReplyTo($emailId, $name);
+        }
+
+        // Subject line can vary by form type
+        $email->setSubject("New {$formType} from {$name}");
+
+        // Build the email body
+        $message  = "<h3>New {$formType}</h3>";
+        $message .= "<p><strong>Name:</strong> " . esc($name) . "</p>";
+        $message .= "<p><strong>Email:</strong> " . esc($emailId) . "</p>";
+        $message .= "<p><strong>Phone:</strong> " . esc($phone) . "</p>";
+        $message .= "<p><strong>Subject:</strong> " . esc($subject) . "</p>";
+        $message .= "<p><strong>Message:</strong> " . nl2br(esc($messageContent)) . "</p>";
+
+        $email->setMessage($message);
+
+        if ($email->send()) {
+            return true;
+        } else {
+            log_message('error', 'Generic form email failed to send: ' . $email->printDebugger(['headers']));
+            return false;
+        }
+    }
+
+
+    
+
     
     protected function sendPasswordResetEmail($userEmail, $password, $userProfileId)
     {
