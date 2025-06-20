@@ -40,6 +40,12 @@ class RoutePermissions extends BaseConfig
             ],
             'requireAll' => false
         ],
+        'ProductService/getDashboardStatitics' => [
+            'permissions' => [
+                ['permissionName' => 'APP_LOGIN'],
+            ],
+            'requireAll' => false
+        ],
        
        
         

@@ -17,6 +17,7 @@ $routes->post('ProductService/getProduct', 'ProductService::getProduct');
 $routes->post('ProductService/updateProduct', 'ProductService::updateProduct');
 $routes->post('ProductService/deleteProduct', 'ProductService::deleteProduct');
 $routes->post('ProductService/searchProduct', 'ProductService::searchProduct');
+$routes->post('ProductService/getDashboardStatitics', 'ProductService::getDashboardStatitics');
 
 
 

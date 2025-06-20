@@ -7,6 +7,8 @@ use App\Models\Common\DataModels\PaginationDataModel;
 use App\Models\Common\DataModels\ProductDataModel;
 use App\Models\Common\DataModels\CategoryDataModel;
 use App\Models\Common\DataModels\BrandDataModel;
+use App\Models\Common\DataModels\DashboardStatisticsDataModel;
+use App\Models\Common\DataModels\DashBoardProductEnquiryGraphDataModel;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 class ProductService_model extends Base_model
 {
@@ -188,5 +190,42 @@ class ProductService_model extends Base_model
         $resultSet2 = PaginationDataModel::fromDbResultSet($nextResultSet->fetch_all(MYSQLI_ASSOC));
         $searchProductResponseDataModel->pagination = count($resultSet2) > 0 ? $resultSet2[0] : null;
         
+    }
+
+    public function getDashboardStatiticsProcs($getDashboardStatisticsRequestDataModel, &$getDashBoardStatisticsResponseDataModel)
+    {
+
+
+         // Extract request data
+         $dashBoardStatistic = $getDashboardStatisticsRequestDataModel->dashBoardStatistic;
+         $sql = "CALL sp_getDashboardStatistics()";
+         try {
+             $query = $this->db->query($sql, [
+             ]);
+         } catch (DatabaseException $e) {
+             $this->checkDBError();
+         }
+     
+         // Process the result set for statistics
+         $resultSet1 = DashboardStatisticsDataModel::fromDbResultSet($query->getResult());
+         $getDashBoardStatisticsResponseDataModel->statitics = count($resultSet1) > 0 ? $resultSet1[0] : null;
+
+         $this->db->connID->next_result();
+         $query->freeResult();
+ 
+           // Step 2: Get updated loyalty program details
+           $sql2 = "CALL sp_getDashboardProductEnquiryGraph()";
+           try {
+             $query2 = $this->db->query($sql2, [
+             ]);
+         } catch (DatabaseException $e) {
+             $this->checkDBError();
+         }
+
+         $resultSet2 = DashBoardProductEnquiryGraphDataModel::fromDbResultSet($query2->getResultArray());
+       
+         $getDashBoardStatisticsResponseDataModel->productEnquiryGraph = count($resultSet2) > 0 ? $resultSet2 : null;
+
+
     }
 }

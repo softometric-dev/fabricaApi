@@ -17,6 +17,8 @@ use App\Models\DataModels\Requests\DeleteProductRequestDataModel;
 use App\Models\DataModels\Responses\DeleteProductResponseDataModel;
 use App\Models\DataModels\Requests\SearchProductRequestDataModel;
 use App\Models\DataModels\Responses\SearchProductResponseDataModel;
+use App\Models\DataModels\Requests\GetDashboardStatisticsRequestDataModel;
+use App\Models\DataModels\Responses\GetDashBoardStatisticsResponseDataModel;
 
 class ProductService extends BaseController
 {
@@ -206,5 +208,31 @@ class ProductService extends BaseController
             $this->sendErrorResponse($searchProductResponseDataModel, $e);
         }
     }
+    public function getDashboardStatitics()
+    {
 
+        try {
+
+            set_error_handler(['App\Libraries\CustomException', 'exceptionHandler']);
+            $getDashBoardStatisticsResponseDataModel = new GetDashBoardStatisticsResponseDataModel();
+
+            $authInfo = $this->checkPermission();
+          
+            $getDashboardStatisticsRequestDataModel = GetDashboardStatisticsRequestDataModel::fromJson($this->request->getBody());
+            $getDashboardStatisticsRequestDataModel->authInfo = $authInfo;
+       
+            $getDashboardStatisticsRequestDataModel->validateAndEnrichData();
+           
+            set_error_handler(['App\Libraries\DatabaseException', 'exceptionHandler']);
+            $this->ProductService_model->getDashboardStatiticsProcs($getDashboardStatisticsRequestDataModel, $getDashBoardStatisticsResponseDataModel);
+        
+            set_error_handler(['App\Libraries\CustomException', 'exceptionHandler']);
+            $this->sendSuccessResponse($getDashBoardStatisticsResponseDataModel);
+
+        } catch (\Exception $e) {
+            // In case of error, set the error details and send error response
+            $getDashBoardStatisticsResponseDataModel->setErrorDetails($e);
+            $this->sendErrorResponse($getDashBoardStatisticsResponseDataModel, $e);
+        }
+    }
 }
