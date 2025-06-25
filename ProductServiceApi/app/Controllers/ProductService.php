@@ -70,7 +70,7 @@ class ProductService extends BaseController
         }
     }
 
-     public function getProduct()
+    public function getProduct()
 	{
         try
 		{

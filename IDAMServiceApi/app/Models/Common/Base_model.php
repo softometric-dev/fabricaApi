@@ -57,7 +57,7 @@ class Base_model extends Model
         $email = Services::email();
 
         // Configure Email Preferences (optional if set in Config)
-        $email->setFrom('your@gmail.com', 'ABL Ceramica');
+        $email->setFrom('your@gmail.com', 'fabrica distribution');
         $email->setTo($userEmail);
 
         // Email Subject
@@ -87,7 +87,7 @@ class Base_model extends Model
         $email = Services::email();
 
         // Configure Email Preferences (optional if set in Config)
-        $email->setFrom('your@gmail.com', 'ABL Ceramica');
+        $email->setFrom('your@gmail.com', 'fabrica distribution');
         $email->setTo($userEmail);
 
         // Email Subject

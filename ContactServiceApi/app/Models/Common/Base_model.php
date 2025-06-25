@@ -63,7 +63,7 @@ class Base_model extends Model
 
         // Set sender (your system email) and reply-to (user's email if available)
         $email->setFrom('your@gmail.com', esc($name));
-        $email->setTo('envanto.alpha@gmail.com'); // <-- Change to your admin inbox
+        $email->setTo('syed@fabricadistribution.com'); // <-- Change to your admin inbox
 
         if (!empty($emailId)) {
             $email->setReplyTo($emailId, $name);
@@ -100,7 +100,7 @@ class Base_model extends Model
         $email = Services::email();
 
         // Configure Email Preferences (optional if set in Config)
-        $email->setFrom('your@gmail.com', 'ABL Ceramica');
+        $email->setFrom('your@gmail.com', 'fabrica distribution');
         $email->setTo($userEmail);
 
         // Email Subject
@@ -130,7 +130,7 @@ class Base_model extends Model
         $email = Services::email();
 
         // Configure Email Preferences (optional if set in Config)
-        $email->setFrom('your@gmail.com', 'ABL Ceramica');
+        $email->setFrom('your@gmail.com', 'fabrica distribution');
         $email->setTo($userEmail);
 
         // Email Subject
