@@ -6,7 +6,7 @@ use CodeIgniter\Config\BaseConfig;
 
 class Email extends BaseConfig
 {
-    public string $fromEmail  = 'syed@fabricadistribution.com';
+    public string $fromEmail  = 'connect@fabricadistribution.com';
     public string $fromName   = 'fabrica distribution';
     public string $recipients = '';
 
@@ -28,17 +28,18 @@ class Email extends BaseConfig
     /**
      * SMTP Server Hostname
      */
-    public string $SMTPHost = 'smtp.zoho.in';
+    public string $SMTPHost    = 'smtp.zoho.in';
 
     /**
      * SMTP Username
      */
-    public string $SMTPUser = 'syed@fabricadistribution.com';
+    public string $SMTPUser = 'connect@fabricadistribution.com';
 
     /**
      * SMTP Password
      */
-    public string $SMTPPass = 'WWUMG5cnRPhy';
+ 
+    public string $SMTPPass = 'SwaqBq6ZDy1K';
 
     /**
      * SMTP Port
@@ -48,7 +49,7 @@ class Email extends BaseConfig
     /**
      * SMTP Timeout (in seconds)
      */
-    public int $SMTPTimeout = 5;
+    public int $SMTPTimeout = 15;
 
     /**
      * Enable persistent SMTP connections

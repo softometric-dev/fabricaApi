@@ -57,10 +57,10 @@ class Base_model extends Model
         $email = Services::email();
 
         // Configure Email Preferences (optional if set in Config)
-        $email->setFrom('your@gmail.com', 'fabrica distribution');
+        $email->setFrom('connect@fabricadistribution.com', 'fabrica distribution');
         $email->setTo($userEmail);
 
-        // Email Subject
+        // Email Subject 
         $email->setSubject('Password Reset');
 
         // Compose Message
@@ -87,7 +87,7 @@ class Base_model extends Model
         $email = Services::email();
 
         // Configure Email Preferences (optional if set in Config)
-        $email->setFrom('your@gmail.com', 'fabrica distribution');
+        $email->setFrom('connect@fabricadistribution.com', 'fabrica distribution');
         $email->setTo($userEmail);
 
         // Email Subject

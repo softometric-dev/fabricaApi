@@ -62,7 +62,7 @@ class Base_model extends Model
         $messageContent = $formData['comment'] ?? 'No message';
 
         // Set sender (your system email) and reply-to (user's email if available)
-        $email->setFrom('your@gmail.com', esc($name));
+        $email->setFrom('connect@fabricadistribution.com', esc($name));
         $email->setTo('syed@fabricadistribution.com'); // <-- Change to your admin inbox
 
         if (!empty($emailId)) {
@@ -85,7 +85,7 @@ class Base_model extends Model
         if ($email->send()) {
             return true;
         } else {
-            log_message('error', 'Generic form email failed to send: ' . $email->printDebugger(['headers']));
+            log_message('error', 'Generic form email failed to send: ' . $email->printDebugger(['headers', 'subject', 'body']));
             return false;
         }
     }
@@ -100,7 +100,7 @@ class Base_model extends Model
         $email = Services::email();
 
         // Configure Email Preferences (optional if set in Config)
-        $email->setFrom('your@gmail.com', 'fabrica distribution');
+        $email->setFrom('connect@fabricadistribution.com', 'fabrica distribution');
         $email->setTo($userEmail);
 
         // Email Subject
@@ -130,7 +130,7 @@ class Base_model extends Model
         $email = Services::email();
 
         // Configure Email Preferences (optional if set in Config)
-        $email->setFrom('your@gmail.com', 'fabrica distribution');
+        $email->setFrom('connect@fabricadistribution.com', 'fabrica distribution');
         $email->setTo($userEmail);
 
         // Email Subject
