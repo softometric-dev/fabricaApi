@@ -26,11 +26,11 @@ class Database extends Config
      */
     public array $default = [
         'DSN'          => '',
-         'hostname'     => 'localhost',
-        'username'     => 'root',
-        'password'     => '',
-        'database'     => 'fabrica_db',
-        'DBDriver'     => 'MySQLi',
+        'hostname' => '127.0.0.1',
+        'username' => 'root',
+        'password' => 'rootpassword',
+        'database' => 'fabrica_db',
+        'DBDriver' => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
         'DBDebug'      => true,

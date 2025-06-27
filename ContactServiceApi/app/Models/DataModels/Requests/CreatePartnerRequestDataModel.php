@@ -28,6 +28,11 @@ class CreatePartnerRequestDataModel extends ApiRequestDataModel
         ) {
             throw new ParameterException(MANDATORY_PARAMETER_ERROR, 'fullName,companyName,email');
         }
+
+         if (!empty($newPartner->comment) && strlen($newPartner->comment) > 250) {
+
+            throw new ParameterException(PARAMETER_VALIDATION_ERROR, 'comment must not exceed 250 characters');
+        }
     }
 
     public static function fromJson($jsonString)

@@ -46,6 +46,7 @@ class ContactService extends BaseController
         try
 		{
 
+          
             set_error_handler(['App\Libraries\CustomException', 'exceptionHandler']);
             $createContactFormResponseDataModel = new CreateContactFormResponseDataModel();
 
@@ -55,6 +56,7 @@ class ContactService extends BaseController
 
             // $createContactFormRequestDataModel->authInfo = $authInfo;
             $createContactFormRequestDataModel->validateAndEnrichData();
+ 
 
             set_error_handler(['App\Libraries\DatabaseException', 'exceptionHandler']);
             $this->ContactService_model->createContactFormProc($createContactFormRequestDataModel,$createContactFormResponseDataModel);

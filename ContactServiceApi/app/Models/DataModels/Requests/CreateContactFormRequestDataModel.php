@@ -29,6 +29,12 @@ class CreateContactFormRequestDataModel extends ApiRequestDataModel
         ) {
             throw new ParameterException(MANDATORY_PARAMETER_ERROR, 'fullName,phone,subject,email');
         }
+
+        // Validate comment length if provided
+        if (!empty($newContactForm->comment) && strlen($newContactForm->comment) > 250) {
+
+            throw new ParameterException(PARAMETER_VALIDATION_ERROR, 'comment must not exceed 250 characters');
+        }
     }
 
     public static function fromJson($jsonString)
