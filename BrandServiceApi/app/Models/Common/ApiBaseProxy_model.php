@@ -39,6 +39,7 @@ class ApiBaseProxy_model extends Model
         curl_setopt($client, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($client, CURLOPT_HTTPHEADER, [
             'Authorization: ' . $authorizationToken,
+             'X-Internal-Token: ' . env('internal.api.token'),
             'Content-Type: application/json'
         ]);
   

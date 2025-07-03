@@ -23,7 +23,9 @@ class ApiBaseProxy_model extends Model
     protected function invokeApi($route, $requestJsonData)
     {
         
-     
+        $internalToken = env('internal.api.token');
+
+           
         $request = \Config\Services::request();
         $authorizationToken = $request->getHeaderLine('Authorization');
         // $url = $this->baseUrl .$route;
@@ -32,7 +34,7 @@ class ApiBaseProxy_model extends Model
         // $url = $this->baseUrl . '/public/' . $route;
         $client = curl_init($url);
 
-      
+    
        
         curl_setopt($client, CURLOPT_POST, true);
         curl_setopt($client, CURLOPT_POSTFIELDS, $requestJsonData);

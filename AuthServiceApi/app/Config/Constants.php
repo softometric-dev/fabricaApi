@@ -213,4 +213,3 @@ define('FOLDER_NOT_EXIST','E_2005');
 define('DB_ERROR','E_3000');
 define('DB_DUPLICATE_RECORD','E_3001');
 define('DB_RECORD_NOT_FOUND','E_3002');
-

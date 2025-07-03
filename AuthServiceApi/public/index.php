@@ -8,15 +8,23 @@
 
 $minPhpVersion = '8.1'; // If you update this, don't forget to update `spark`.
 
-$method=$_SERVER['REQUEST_METHOD'];
-if($method=="OPTIONS"){
-   header('Access-Control-Allow-Origin: *');
-   header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
-   header('Access-Control-Allow-Headers: Content-Type, Authorization');
-   header('HTTP/1.1 200 OK');
-   die();
+// $method=$_SERVER['REQUEST_METHOD'];
+// if($method=="OPTIONS"){
+//    header('Access-Control-Allow-Origin: *');
+//    header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
+//    header('Access-Control-Allow-Headers: Content-Type, Authorization');
+//    header('HTTP/1.1 200 OK');
+//    die();
 
+// }
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+    header("Access-Control-Allow-Headers: Origin, Content-Type, Authorization, X-Requested-With, X-Internal-Token");
+    exit(0);
 }
+
 
 if (version_compare(PHP_VERSION, $minPhpVersion, '<')) {
     $message = sprintf(

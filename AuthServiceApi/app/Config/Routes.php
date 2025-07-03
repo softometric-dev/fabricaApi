@@ -20,7 +20,8 @@ $routes = Services::routes();
 // $routes->setAutoRoute(true);
 
 $routes->post('login', 'AuthService::login');
-$routes->post('hasPermission', 'AuthService::hasPermission');
+// $routes->post('hasPermission', 'AuthService::hasPermission');
+$routes->post('hasPermission', 'AuthService::hasPermission', ['filter' => 'apiaccess']);
 /*
  * --------------------------------------------------------------------
  * Route Definitions

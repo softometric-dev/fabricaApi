@@ -215,14 +215,14 @@ class ProductService extends BaseController
 
             set_error_handler(['App\Libraries\CustomException', 'exceptionHandler']);
             $getDashBoardStatisticsResponseDataModel = new GetDashBoardStatisticsResponseDataModel();
-
+ 
             $authInfo = $this->checkPermission();
-          
+     
             $getDashboardStatisticsRequestDataModel = GetDashboardStatisticsRequestDataModel::fromJson($this->request->getBody());
             $getDashboardStatisticsRequestDataModel->authInfo = $authInfo;
-       
+         
             $getDashboardStatisticsRequestDataModel->validateAndEnrichData();
-           
+        
             set_error_handler(['App\Libraries\DatabaseException', 'exceptionHandler']);
             $this->ProductService_model->getDashboardStatiticsProcs($getDashboardStatisticsRequestDataModel, $getDashBoardStatisticsResponseDataModel);
         

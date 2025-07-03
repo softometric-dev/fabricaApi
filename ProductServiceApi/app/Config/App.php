@@ -16,8 +16,9 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'http://localhost/fabricaAPI/ProductServiceApi/';
-    public string $authServiceApiBaseUrl = 'http://localhost/fabricaAPI/AuthServiceApi';
+    
+    public string $baseURL = 'http://localhost:8081/fabricaAPI/ProductServiceApi/';
+    public string $authServiceApiBaseUrl = 'http://localhost:8081/fabricaAPI/AuthServiceApi';
     public string $authServiceApiHasPermissionAction = 'hasPermission';
 
     /**

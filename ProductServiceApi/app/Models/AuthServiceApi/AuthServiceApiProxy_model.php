@@ -21,13 +21,13 @@ class AuthServiceApiProxy_model extends ApiBaseProxy_model
         $hasPermissionRequestDataModel = new HasPermissionRequestDataModel();
         $hasPermissionRequestDataModel->permissions = $requiredPermissions;
         $hasPermissionRequestDataModel->requireAll = $requireAll;
-   
-      
+         	
             
         $hasPermissionAction = config('App')->authServiceApiHasPermissionAction;
 
       
         $responseJsonData = $this->invokeApi($hasPermissionAction, $hasPermissionRequestDataModel->toJson());
+
       
         $hasPermissionResponseDataModel = HasPermissionResponseDataModel::fromJson($responseJsonData);
       

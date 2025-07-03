@@ -48,7 +48,7 @@ class BaseController extends Controller
         $route_permissions = $routePermissionsConfig->route_permissions;
    
       
-    	
+    
         if (array_key_exists($route, $route_permissions)) 
         {
            
@@ -56,10 +56,11 @@ class BaseController extends Controller
          
             $required_permissions = $route_config['permissions'];
             $requireAll = isset($route_config['requireAll']) ? $route_config['requireAll'] : false;
-       
+        
             $this->authServiceApiProxyModel = new AuthServiceApiProxy_model();
             $response = $this->authServiceApiProxyModel->hasPermission($required_permissions, $requireAll);
       
+     
             $hasPermission = $response->hasPermission;
             $authInfo = $response->authInfo;
         }
