@@ -33,7 +33,7 @@ class Cors implements FilterInterface
      protected $allowedOrigins = [
         'https://fabricadistribution.com',
         'https://dashboard.fabricadistribution.com',
-        // 'http://localhost:5173',
+        'http://localhost:5173',
     ];
 
     public function before(RequestInterface $request, $arguments = null)

@@ -22,6 +22,7 @@ class ApiAccessFilter implements FilterInterface
         $allowedOrigins = [
             'https://fabricadistribution.com',
             'https://dashboard.fabricadistribution.com',
+             'http://localhost:5173',
         ];
 
         $isInternal = (
